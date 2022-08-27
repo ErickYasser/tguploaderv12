@@ -450,7 +450,7 @@ def onmessage(update,bot:ObigramClient):
             except:
                 bot.sendMessage(update.message.chat.id,'❌Error en el comando /host moodlehost❌')
             return
-        if '/repo' in msgText:
+        if '/repoid' in msgText:
             try:
                 cmd = str(msgText).split(' ',2)
                 repoid = int(cmd[1])
@@ -558,6 +558,20 @@ def onmessage(update,bot:ObigramClient):
             proxy_sms = str(msgText).split(' ')[1]
             proxy_de = S5Crypto.decrypt(f'{proxy_sms}')
             bot.sendMessage(update.message.chat.id, f'Proxy decryptado:\n{proxy_de}')
+            return
+        if '/uptype' in msgText:
+            try:
+                cmd = str(msgText).split(' ',2)
+                type = cmd[1]
+                getUser = user_info
+                if getUser:
+                    getUser['uploadtype'] = type
+                    jdb.save_data_user(username,getUser)
+                    jdb.save()
+                    statInfo = infos.createStat(username,getUser,jdb.is_admin(username))
+                    bot.sendMessage(update.message.chat.id,statInfo)
+            except:
+                bot.sendMessage(update.message.chat.id,'⚠️Error en el comando up tipo de subida (evidence,draft,blog,calendar)⚠️')
             return
         if '/dir' in msgText:
             try:
